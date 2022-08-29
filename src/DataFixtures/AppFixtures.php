@@ -11,7 +11,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $jsonVehicles = json_decode(file_get_contents(__DIR__ . '/vehicles.json'), false);
-
+        //dd($jsonVehicles);
         foreach ($jsonVehicles as $jsonVehicle) {
             $vehicle = new Vehicles();
             $vehicle->setBrand($jsonVehicle->brand);

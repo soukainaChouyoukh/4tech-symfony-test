@@ -1,7 +1,352 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="flex w-full h-screen">
-        <p class="m-auto">Start here</p>
+
+    <div class="flex container mx-auto h-screen ">
+        <div class="mt-8 grid grid-cols-4 ml-3 ">
+            <form action="" method="POST" id="filter_form">
+                <div class="">
+                <h1 class="font-black">FILTER MA RECHERCHE</h1>
+                <div class="w-56  mt-8 h-10 bg-sky-900 rounded-md grid grid-cols-4">
+                    <div class="text-white col-span-3 ml-2 mt-2">Prêt à partir</div>
+                    <div class="col-span-1 mt-2">
+                        <label for="default-toggle" class="inline-flex relative items-center cursor-pointer">
+                            <input onchange="submitFilters()" name="ready_to_go" type="checkbox" value="" id="default-toggle" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                </div>
+                <div class="w-56  mt-2 h-10 bg-sky-900 rounded-md grid grid-cols-4">
+                    <div class="text-white col-span-3 ml-2 mt-2">Zéro km</div>
+                    <div class="col-span-1 mt-2">
+                        <label for="default-toggle2" class="inline-flex relative items-center cursor-pointer">
+                            <input onchange="submitFilters()" name="zero_km" type="checkbox" value="" id="default-toggle2" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                </div>
+                <div class="w-56  mt-2 h-10 bg-sky-900 rounded-md grid grid-cols-4">
+                    <div class="text-white col-span-3 ml-2 mt-2">Promotions</div>
+                    <div class="col-span-1 mt-2">
+                        <label for="default-toggle3" class="inline-flex relative items-center cursor-pointer">
+                            <input onchange="submitFilters()" name="promotion" type="checkbox" value="" id="default-toggle3" class="sr-only peer" {% if promotion %} checked {% endif%} >
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                </div>
+                <div class="mt-8">
+                    <h1 class="font-semibold">Budget</h1>
+                    <div class="flex">
+                        <div class="w-20  mt-4 h-10 bg-sky-900 rounded-l-lg text-center pt-2">
+                            <span class="text-white">Total</span>
+                        </div>
+                        <div class="w-20  mt-4 h-10 border border-sky-900 rounded-r-lg text-center pt-2">
+                            <span class="text-sky-900">Monsuel</span>
+                        </div>
+                    </div>
+                    <!---slider--->
+                    <div class="mb-4 mt-4 w-52">
+                        <div class="slider relative h-1 rounded-md bg-gray-300">
+                                <div class="progress absolute h-1 bg-green-300 rounded">
+                            </div>
+                        </div>
+                        <div class="range-input relative">
+                            <input type="range" value="20" class="range-min absolute w-full-top-1 h-1 bg-transparent appearance-none pointer-events-none"/>
+                            <input type="range" value="70" class="range-max absolute w-full-top-1 h-1 bg-transparent appearance-none pointer-events-none"/>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mt-4  h-px bg-gray-200 w-52 mt-4 border-0 dark:bg-gray-700">
+                <div class="relative w-[240px] overflow-hidden">
+                    <input type="checkbox" class="peer absolute top-0 insert-x-0 w-full h-12 opacity-0 z-10 cursor-pointer">
+                    <div class=" h-12 flex">
+                        <h1 class="mt-2 font-semibold">Marque </h1>
+                    </div>
+                    <div class="absolute top-3 right-3 text-white transition-transform duration-500 rotate-0 peer-checked:rotate-180">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                             class="text-black w-4 h-4">
+                            <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="bg-white overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-60">
+                        <div class="mt-2">
+                            {% for brand in brands %}
+                                <div class="mt-2 mb-2 mx-4">
+                                    <input onchange="submitFilters()" name="brand" type="radio" value="{{ brand.brand }}" id="{{ brand.brand }}" {% if brand.brand == selected_brand %} checked {% endif %}>
+                                    <label for="" class="ml-2">{{ brand.brand }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <hr class="mt-4  h-px bg-gray-200 w-52 mt-4 border-0 dark:bg-gray-700">
+                <div class="relative w-[240px] overflow-hidden">
+                    <input type="checkbox" class="peer absolute top-0 insert-x-0 w-full h-12 opacity-0 z-10 cursor-pointer">
+                    <div class=" h-12  flex">
+                        <h1 class="mt-2 font-semibold">Modèle </h1>
+                    </div>
+                    <div class="absolute top-3 right-3 text-white transition-transform duration-500 rotate-0 peer-checked:rotate-180">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                             class="text-black w-4 h-4">
+                            <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="bg-white overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40">
+                        <div class="mt-2">
+                            {% for model in models %}
+                                <div class="mt-2 mb-2 mx-4">
+                                    <input onchange="submitFilters()" name="model" type="radio" value="{{ model.model }}" id="{{ model.model }}" {% if model.model in selected_model %} checked {% endif %}>
+                                    <label for="" class="ml-2">{{ model.model }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <hr class="mt-4  h-px bg-gray-200 w-52 mt-4 border-0 dark:bg-gray-700">
+                <div class="relative w-[240px] overflow-hidden">
+                    <input type="checkbox" class="peer absolute top-0 insert-x-0 w-full h-12 opacity-0 z-10 cursor-pointer">
+                    <div class=" h-12  flex">
+                        <h1 class=" mt-2 font-semibold">Energie </h1>
+                    </div>
+                    <div class="absolute top-3 right-3 text-white transition-transform duration-500 rotate-0 peer-checked:rotate-180">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                             class="text-black w-4 h-4">
+                            <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="bg-white overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-60">
+                        <div class="mt-2">
+                            <div class="mt-2 mb-2 mx-4">
+                                <input onchange="submitFilters()" name="energy" type="radio" value="Hybride" {% if 'Hybride' in selectd_energy %}checked {% endif %}>
+                                <label for="" class="ml-2">Hybride</label>
+                            </div>
+                            <div class="mt-2 mb-2 mx-4">
+                                <input onchange="submitFilters()" name="energy" type="radio" value="Diesel" {% if 'Diesel' in selectd_energy %}checked {% endif %}>
+                                <label for="" class="ml-2">Diesel</label>
+                            </div>
+                            <div class="mt-2 mb-2 mx-4">
+                                <input onchange="submitFilters()" name="energy" type="radio" value="Essence" {% if 'Essence' in selectd_energy %}checked {% endif %}>
+                                <label for="" class="ml-2">Essence</label>
+                            </div>
+                            <div class="mt-2 mb-2 mx-4">
+                                <input onchange="submitFilters()" name="energy" type="radio" value="Electrique" {% if 'Electrique' in selectd_energy %}checked {% endif %}>
+                                <label for="" class="ml-2">Electrique</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mt-4  h-px bg-gray-200 w-52 mt-4 border-0 dark:bg-gray-700">
+                <div class="relative w-[240px] overflow-hidden">
+                    <input type="checkbox" class="peer absolute top-0 insert-x-0 w-full h-12 opacity-0 z-10 cursor-pointer">
+                    <div class=" h-12  flex">
+                        <h1 class=" mt-2 font-semibold">Type de véhicule </h1>
+                    </div>
+                    <div class="absolute top-3 right-3 text-white transition-transform duration-500 rotate-0 peer-checked:rotate-180">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                             class="text-black w-4 h-4">
+                            <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="bg-white overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-60">
+                        <div class="mt-2">
+                            <div class="mt-2 mb-2 mx-4">
+                                <input onchange="submitFilters()" name="car_type" type="radio" value="Tous" checked>
+                                <label for="" class="ml-2">Tous</label>
+                            </div>
+                            <div class="mt-2 mb-2 mx-4">
+                                <input onchange="submitFilters()" name="car_type" type="radio" value="Citadine">
+                                <label for="" class="ml-2">Citadine</label>
+                            </div>
+                            <div class="mt-2 mb-2 mx-4">
+                                <input onchange="submitFilters()" name="car_type" type="radio" value="Berline">
+                                <label for="" class="ml-2">Berline</label>
+                            </div>
+                            <div class="mt-2 mb-2 mx-4">
+                                <input onchange="submitFilters()" name="car_type" type="radio"  value="Break">
+                                <label for="" class="ml-2">Break</label>
+                            </div>
+                            <div class="mt-2 mb-2 mx-4">
+                                <input onchange="submitFilters()" name="car_type" type="radio"  value="SUV">
+                                <label for="" class="ml-2">SUV / 4*4</label>
+                            </div>
+                            <div class="mt-2 mb-2 mx-4">
+                                <input onchange="submitFilters()" name="car_type" type="radio"  value="Monospace">
+                                <label for="" class="ml-2">Monospace / Ludospace</label>
+                            </div>
+                            <div class="mt-2 mb-2 mx-4">
+                                <input onchange="submitFilters()" name="car_type" type="radio"  value="Coupe">
+                                <label for="" class="ml-2">Coupé /Cabriolet</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mt-4  h-px bg-gray-200 w-52 mt-4 border-0 dark:bg-gray-700">
+                <div class="relative w-[240px] overflow-hidden">
+                    <input type="checkbox" class="peer absolute top-0 insert-x-0 w-full h-12 opacity-0 z-10 cursor-pointer">
+                    <div class=" h-12 flex">
+                        <h1 class="mt-2 font-semibold">Kilométrage </h1>
+                    </div>
+                    <div class="absolute top-3 right-3 text-white transition-transform duration-500 rotate-0 peer-checked:rotate-180">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                             class="text-black w-4 h-4">
+                            <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="bg-white overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40">
+                    </div>
+                </div>
+                <hr class="mt-4  h-px bg-gray-200 w-52 mt-4 border-0 dark:bg-gray-700">
+                <div class="relative w-[240px] overflow-hidden">
+                    <input type="checkbox" class="peer absolute top-0 insert-x-0 w-full h-12 opacity-0 z-10 cursor-pointer">
+                    <div class=" h-12  flex">
+                        <h1 class="mt-2 font-semibold">Année </h1>
+                    </div>
+                    <div class="absolute top-3 right-3 text-white transition-transform duration-500 rotate-0 peer-checked:rotate-180">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                             class="text-black w-4 h-4">
+                            <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="bg-white overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40">
+                    </div>
+                </div>
+                <hr class="mt-4  h-px bg-gray-200 w-52 mt-4 border-0 dark:bg-gray-700">
+                <div class="relative w-[240px] overflow-hidden">
+                    <input type="checkbox" class="peer absolute top-0 insert-x-0 w-full h-12 opacity-0 z-10 cursor-pointer">
+                    <div class=" h-12  flex">
+                        <h1 class="mt-2 font-semibold">Couleur </h1>
+                    </div>
+                    <div class="absolute top-3 right-3 text-white transition-transform duration-500 rotate-0 peer-checked:rotate-180">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                             class="text-black w-4 h-4">
+                            <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="bg-white overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40">
+                    </div>
+                </div>
+                <hr class="mt-4  h-px bg-gray-200 w-52 mt-4 border-0 dark:bg-gray-700">
+                <div class="relative w-[240px] overflow-hidden">
+                    <input type="checkbox" class="peer absolute top-0 insert-x-0 w-full h-12 opacity-0 z-10 cursor-pointer">
+                    <div class=" h-12 flex">
+                        <h1 class="mt-2 font-semibold">Motorisation </h1>
+                    </div>
+                    <div class="absolute top-3 right-3 text-white transition-transform duration-500 rotate-0 peer-checked:rotate-180">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                             class="text-black w-4 h-4">
+                            <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="bg-white overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40">
+                    </div>
+                </div>
+                <hr class="mt-4  h-px bg-gray-200 w-52 mt-4 border-0 dark:bg-gray-700">
+                <div class="relative w-[240px] overflow-hidden">
+                    <input type="checkbox" class="peer absolute top-0 insert-x-0 w-full h-12 opacity-0 z-10 cursor-pointer">
+                    <div class=" h-12  flex">
+                        <h1 class="mt-2 font-semibold">Equipement </h1>
+                    </div>
+                    <div class="absolute top-3 right-3 text-white transition-transform duration-500 rotate-0 peer-checked:rotate-180">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                             class="text-black w-4 h-4">
+                            <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="bg-white overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40">
+                    </div>
+                </div>
+            </div>
+            </form>
+            <div class="col-span-3">
+                <div class="grid grid-cols-4 gap-2">
+                    <div class="col-span-3">
+                        <p class="mt-2 text-sky-900">{{ vehicles.getTotalItemCount }} résultats correspondant à votre recherche</p>
+                    </div>
+                    <form action="" method="POST" id="sort_by_form">
+                        <div class="col-span-1">
+                            <label>Trier par </label>
+                            <select id="sort_by" name="sort_by" class="rounded-md ml-2 bg-gray-200 px-11 py-1.5 text-left" onchange="orderBy()">
+                                <option class="text-left" value="brand_asc">Brand A->Z</option>
+                                <option class="text-left" value="brand_desc">Brand Z->A</option>
+                                <option class="text-left" value="price_asc">Price ASC</option>
+                                <option class="text-left" value="price_desc">Price DESC</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="mt-8 grid grid-cols-3 gap-6 ">
+                    {% for vehicle in vehicles|slice(0, 5)  %}
+                    <div class="rounded-md shadow-lg shadow-gray-10/50 ">
+                        <div class="p-2 h-44">
+                            {% if(vehicle.pics|length!= 0) %}
+                            <img src="{{vehicle.pics[0]}}">
+                            {%endif%}
+                        </div>
+                        <div class="border-teal-50 h-36  grid grid-cols-4  bg-teal-50 p-2">
+                            <div class="col-span-3">
+                                <div class="text-teal-500">{{ vehicle.brand }}</div>
+                                <h1 class="font-bold">{{ vehicle.model }}</h1>
+                                <div class="font-semibold">{{ vehicle.version }}</div>
+                                <div>{{ vehicle.year }}-{{ vehicle.energy }} - {{ vehicle.power }}ch</div>
+                            </div>
+                            <div class="col-span-1">
+                                <h1 class="font-bold">{{ vehicle.price }}€</h1>
+                                <div class="text-gray-400">
+                                    <span class="text-xs">Ou à partir</span>
+                                    <span class="text-right">{{ vehicle.PriceMonthly }} €</span>
+                                   <span class="text-xs text-right">/mois</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {%endfor%}
+                    <div>
+                        <img src="https://user-images.githubusercontent.com/34513693/160633732-4b9dbc32-656b-473d-86a5-4f0b26bae908.png" alt="">
+                    </div>
+                    {% for vehicle in vehicles|slice(5, 35)  %}
+                        <div class="rounded-md shadow-lg shadow-gray-10/50 ">
+                            <div class="p-2 h-44">
+                                {% if(vehicle.pics|length!= 0) %}
+                                    <img src="{{vehicle.pics[0]}}">
+                                {%endif%}
+                            </div>
+                            <div class="border-teal-50 h-36  grid grid-cols-4  bg-teal-50 p-2">
+                                <div class="col-span-3">
+                                    <div class="text-teal-500">{{ vehicle.brand }}</div>
+                                    <h1 class="font-bold">{{ vehicle.model }}</h1>
+                                    <div class="font-semibold">{{ vehicle.version }}</div>
+                                    <div>{{ vehicle.year }}-{{ vehicle.energy }} - {{ vehicle.power }}ch</div>
+                                </div>
+                                <div class="col-span-1">
+                                    <h1 class="font-bold">{{ vehicle.price }}€</h1>
+                                    <div class="text-gray-400">
+                                        {% if(vehicle.PriceMonthly) %}
+                                        <span class="text-xs">Ou à partir</span>
+                                        <span class="text-right">{{ vehicle.PriceMonthly }} €</span>
+                                        <span class="text-xs text-right">/mois</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {%endfor%}
+                </div>
+                <nav aria-label="Page navigation example " class="mt-8 content-center">
+                    {{ knp_pagination_render(vehicles) }}
+                </nav>
+            </div>
+        </div>
     </div>
+    {% block javascripts_footer %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+    </script>
+        <script>
+            function orderBy() {
+                $('#sort_by_form').submit();
+            }
+            function submitFilters(){
+                $('#filter_form').submit();
+            }
+        </script>
+    {% endblock %}
 {% endblock %}
